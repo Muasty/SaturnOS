@@ -1,9 +1,27 @@
-h1{
-  color:red;
-  size: 20px;
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  /* Dark Angled Gradient: Black -> Grey -> Blue */
+  background: linear-gradient(135deg, #000000 0%, #334155 60%, #1e40af 100%);
+  background-attachment: fixed; /* Keeps the gradient from repeating if you scroll */
+  
+  /* Text Styling */
+  font-family: sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
-p{
-  font-family: monospace;
-  color: purple:
-  size: 30px;
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+p {
+  font-size: 1.2rem;
+  opacity: 0.8;
 }
