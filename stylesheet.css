@@ -224,3 +224,136 @@ section h2 {
 section p {
     color: #cbd5e1;
 }
+
+:root {
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.1);
+    --accent: #94a3b8; /* Sleek Grey Accent */
+}
+
+body {
+    margin: 0;
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, #000000 0%, #111827 50%, #1e1b4b 100%);
+    background-attachment: fixed;
+    color: #f8fafc;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+.luna-container {
+    width: 90%;
+    max-width: 650px;
+    padding: 80px 0;
+}
+
+/* --- Saturn OS Title --- */
+.os-title {
+    font-size: 4.5rem;
+    font-weight: 700;
+    margin: 10px 0;
+    letter-spacing: -3px;
+    background: linear-gradient(to bottom, #ffffff, #64748b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* --- Centered Floating Nav --- */
+.nav-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0 40px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--accent);
+    font-size: 1.1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: white;
+}
+
+/* --- Animations --- */
+.float-anim {
+    display: inline-block;
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* --- Scroll Reveal (Flowing Text) --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Bento Grid --- */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.grid-item {
+    background-size: cover;
+    background-position: center;
+    border-radius: 30px;
+    min-height: 160px;
+    border: 1px solid var(--border);
+}
+
+.grid-item.tall {
+    grid-row: span 2;
+    min-height: 335px;
+}
+
+/* --- Content Styling --- */
+.article-body {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    border-radius: 40px;
+    border: 1px solid var(--border);
+}
+
+.stat-box {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(255,255,255,0.03);
+    padding: 25px;
+    border-radius: 25px;
+    margin: 40px 0;
+}
+
+.stat span { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; }
+.stat p { font-weight: 700; margin: 5px 0 0; font-size: 1.2rem; }
+
+h2 { color: #fff; margin-bottom: 10px; }
+p { line-height: 1.8; font-weight: 300; opacity: 0.8; }
+
+.saturn-icon {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    animation: spin 20s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
