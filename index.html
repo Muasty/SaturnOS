@@ -3,61 +3,82 @@
     <link rel="stylesheet" href="stylesheet.css">
   </head>
   <body>
-<main class="luna-container">
-    <header class="profile-header fade-in">
-        <div class="saturn-icon">🪐</div>
-        <h1>Saturn</h1>
-        <p class="tagline">The Jewel of our Solar System</p>
-    </header>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saturn OS</title>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
 
-    <div class="bento-grid slide-up">
-        <div class="grid-item tall" style="background-image: url('https://images.unsplash.com/photo-1543949806-2c9935e6aa78?q=80&w=1000&auto=format&fit=crop');"></div>
-        <div class="grid-item" style="background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bcc0?auto=format&fit=crop&q=80&w=1000');"></div>
-        <div class="grid-item" style="background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=1000');"></div>
-    </div>
-
-    <article class="article-body slide-up">
-        <section>
-            <h2>A World of Gas and Ice</h2>
-            <p>Adrift in the silent theater of the outer solar system, Saturn stands as a masterpiece of celestial mechanics. Unlike the rocky cradles of the inner planets, Saturn is a gas giant—a swirling sphere of hydrogen and helium that lacks a solid surface to stand upon. Underneath the thick atmosphere, pressures become so intense that gas eventually compresses into a liquid state.</p>
+    <main class="luna-container">
+        <header class="profile-header fade-in">
+            <div class="saturn-icon">🪐</div>
+            <h1 class="os-title">Saturn OS</h1>
             
-            <p>If you were to drop Saturn into a cosmic ocean, it would actually float. Its density is lower than water, making it a literal lightweight despite its massive 120,000-kilometer diameter.</p>
-        </section>
+            <nav class="nav-container">
+                <a href="#" class="nav-item float-anim">Extra</a>
+                <a href="#" class="nav-item float-anim" style="animation-delay: 0.5s;">Info</a>
+                <a href="#" class="nav-item float-anim" style="animation-delay: 1s;">Document</a>
+            </nav>
+        </header>
 
-        <section class="stat-box">
-            <div class="stat">
-                <span>Distance</span>
-                <p>1.4 Billion km</p>
-            </div>
-            <div class="stat">
-                <span>Moons</span>
-                <p>146</p>
-            </div>
-        </section>
-
-        <section>
-            <h2>The Hexagonal Mystery</h2>
-            <p>At Saturn's north pole, there is a massive, permanent cloud pattern in the shape of a perfect hexagon. Each side of this hexagon is nearly 13,800 kilometers long—wider than the entire Earth. This jet stream is a phenomenon seen nowhere else in the known universe, baffling scientists with its geometric precision and longevity.</p>
-        </section>
-
-        <section>
-            <h2>The Crown of Rings</h2>
-            <p>The rings aren't solid disks. They are a shimmering debris field of ice, rock, and dust. Some particles are as small as a grain of sand, while others are larger than a skyscraper. They stretch out 282,000 km from the planet, yet they are incredibly thin—averaging only about 10 meters in thickness.</p>
-        </section>
-
-        <div class="resource-links">
-            <h3>Resources & Archive</h3>
-            <div class="link-stack">
-                <a href="#" class="luna-btn">Extra</a>
-                <a href="#" class="luna-btn">Info</a>
-                <a href="#" class="luna-btn">Document</a>
-            </div>
+        <div class="bento-grid reveal">
+            <div class="grid-item tall" style="background-image: url('https://images.unsplash.com/photo-1614732414444-096e5f1122d5?q=80&w=1000&auto=format&fit=crop');"></div>
+            <div class="grid-item" style="background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bcc0?q=80&w=1000&auto=format&fit=crop');"></div>
+            <div class="grid-item" style="background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?q=80&w=1000&auto=format&fit=crop');"></div>
         </div>
 
-        <footer>
-            <p>Data sourced from NASA JPL • 2026</p>
-        </footer>
-    </article>
-</main>
+        <article class="article-body">
+            <section class="reveal">
+                <h2>System Architecture</h2>
+                <p>Saturn OS operates on a core of hydrogen and helium. Unlike rocky planetary systems, our architecture is fluid, massive, and incredibly fast. At the heart of the system lies a rocky core surrounded by deep layers of metallic liquid.</p>
+            </section>
+
+            <section class="stat-box reveal">
+                <div class="stat">
+                    <span>Uptime</span>
+                    <p>4.5 Billion Years</p>
+                </div>
+                <div class="stat">
+                    <span>Kernels</span>
+                    <p>146 Active</p>
+                </div>
+            </section>
+
+            <section class="reveal">
+                <h2>The Hexagon Protocol</h2>
+                <p>Located at the North Pole, the Hexagon Protocol is a permanent atmospheric phenomenon. It is a six-sided jet stream that serves as the system's primary storm-management engine, maintaining stability across the northern hemisphere.</p>
+            </section>
+
+            <section class="reveal">
+                <h2>Ring Partitioning</h2>
+                <p>The system's storage is partitioned into thousands of icy rings. These rings are not solid, but composed of billions of individual particles ranging from dust to boulders, all synchronized in a perfect orbital dance.</p>
+            </section>
+
+            <footer class="reveal">
+                <p>Version 6.0 • Cassini-Huygens Legacy</p>
+            </footer>
+        </article>
+    </main>
+
+    <script>
+        // Intersection Observer for the "Flowing" scroll effect
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
+
+</body>
+</html>
   </body>
 </html>
