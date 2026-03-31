@@ -25,3 +25,145 @@ p {
   font-size: 1.2rem;
   opacity: 0.8;
 }
+
+:root {
+    --glass: rgba(255, 255, 255, 0.07);
+    --border: rgba(255, 255, 255, 0.12);
+    --accent: #60a5fa;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(160deg, #000000, #1a1a2e, #16213e);
+    background-attachment: fixed;
+    color: #e2e8f0;
+    display: flex;
+    justify-content: center;
+    overflow-x: hidden;
+}
+
+.luna-container {
+    width: 90%;
+    max-width: 600px;
+    padding: 60px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* --- Profile Header --- */
+.profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.saturn-icon {
+    font-size: 5rem;
+    filter: drop-shadow(0 0 20px var(--accent));
+    animation: float 4s ease-in-out infinite;
+}
+
+h1 {
+    font-size: 2.8rem;
+    margin: 10px 0 5px;
+    letter-spacing: -1px;
+}
+
+.tagline {
+    opacity: 0.6;
+    font-weight: 300;
+}
+
+/* --- Bento Image Grid --- */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.grid-item {
+    background-size: cover;
+    background-position: center;
+    border-radius: 24px;
+    min-height: 150px;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid-item.tall {
+    grid-row: span 2;
+    min-height: 315px;
+}
+
+.grid-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    border-color: var(--accent);
+}
+
+/* --- Article Body --- */
+.article-body {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    padding: 40px;
+    border-radius: 32px;
+    border: 1px solid var(--border);
+    line-height: 1.8;
+}
+
+h2 {
+    color: var(--accent);
+    margin-top: 40px;
+}
+
+p {
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+/* --- Interactive Stats --- */
+.stat-box {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+    border-radius: 20px;
+    margin: 30px 0;
+}
+
+.stat { text-align: center; }
+.stat span { font-size: 0.8rem; text-transform: uppercase; opacity: 0.5; }
+.stat p { margin: 0; font-weight: 700; color: var(--accent); }
+
+/* --- Animations --- */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+.slide-up {
+    animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.8rem;
+    opacity: 0.4;
+}
