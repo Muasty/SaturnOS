@@ -1,1 +1,269 @@
 
+/* ═══════════════════════════════════════════
+   SATURN ARTICLE — styles.css
+   ═══════════════════════════════════════════ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --gold:       #e8c97a;
+  --gold-light: #f5e4a8;
+  --cream:      #f0dfa0;
+  --white:      #f5f0e8;
+  --dim:        rgba(245, 240, 232, 0.7);
+  --bg-dark:    #0a0b10;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--white);
+  font-family: 'Lora', Georgia, serif;
+  overflow-x: hidden;
+}
+
+/* ── STARFIELD CANVAS ── */
+#starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% 60%, rgba(60,50,120,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 40% at 30% 80%, rgba(180,120,40,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 30% at 70% 20%, rgba(80,60,160,0.10) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ── FLOATING LOGO ── */
+.logo-wrap {
+  animation: float 6s ease-in-out infinite;
+  filter:
+    drop-shadow(0 0 40px rgba(232, 201, 122, 0.45))
+    drop-shadow(0 0 80px rgba(232, 201, 122, 0.2));
+  margin-bottom: 2rem;
+}
+
+.logo-wrap img {
+  width: clamp(180px, 28vw, 340px);
+  height: auto;
+  display: block;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px)   rotate(-1deg); }
+  50%       { transform: translateY(-22px) rotate(1deg);  }
+}
+
+/* ── HERO TITLE ── */
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  color: var(--white);
+  letter-spacing: 0.02em;
+  text-align: center;
+  line-height: 1.05;
+  text-shadow: 0 0 60px rgba(232,201,122,0.3), 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.hero-title span {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.hero-sub {
+  margin-top: 1.2rem;
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-family: 'Lora', serif;
+  font-style: italic;
+}
+
+/* ── SCROLL HINT ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.4;
+  animation: pulse 2.5s ease-in-out infinite;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.scroll-hint svg {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0);  }
+  50%       { opacity: 0.7; transform: translateX(-50%) translateY(6px); }
+}
+
+/* ── DIVIDER ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.3;
+  margin: 0;
+}
+
+/* ── ARTICLE CONTENT ── */
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 5rem 2rem 8rem;
+}
+
+/* ── SECTIONS ── */
+.section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+  margin-bottom: 5rem;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+  font-family: 'Lora', serif;
+}
+
+.section h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 1.6rem;
+  text-shadow: 0 0 30px rgba(232,201,122,0.15);
+}
+
+.section p {
+  font-size: 1.08rem;
+  line-height: 1.95;
+  color: rgba(245, 240, 232, 0.82);
+  margin-bottom: 1.3rem;
+}
+
+.section p:last-child { margin-bottom: 0; }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  border-left: 3px solid var(--gold);
+  margin: 2.5rem 0;
+  padding: 1rem 2rem;
+  background: rgba(232,201,122,0.04);
+  border-radius: 0 8px 8px 0;
+}
+
+.pull-quote p {
+  font-style: italic;
+  font-size: 1.18rem;
+  color: var(--gold-light) !important;
+  line-height: 1.7;
+}
+
+/* ── FACT CARDS ── */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin: 2.5rem 0;
+}
+
+.fact-card {
+  background: rgba(232,201,122,0.06);
+  border: 1px solid rgba(232,201,122,0.15);
+  border-radius: 12px;
+  padding: 1.4rem 1.2rem;
+  text-align: center;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.fact-card:hover {
+  background: rgba(232,201,122,0.12);
+  border-color: rgba(232,201,122,0.35);
+}
+
+.fact-card .number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.fact-card .label {
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* ── SECTION SEPARATOR ── */
+.sep {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin: 0 0 2rem;
+  border-radius: 2px;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid rgba(232,201,122,0.1);
+  color: rgba(245,240,232,0.3);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
