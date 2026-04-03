@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="//fonts.googleapis.com/css?family=Roboto:400,100,700,900" rel="stylesheet" type="text/css">
+  
+  <link href="./blocked.png" rel="icon" type="image/png">
+  <link id="pwa-manifest" rel="manifest" href="./manifest.json">
+  
+  <meta name="theme-color" content="#000000">
+  <style>
+    @supports (font: -apple-system-body) { html { font: -apple-system-body; } }
+    html { height: 100%; overflow: hidden; }
+    body { margin: 0; padding: 0; background-color: #3E3E3E; background: radial-gradient(ellipse at center, #707070 13%, #333333 100%); font-family: 'Roboto', sans-serif; height: 100vh; }
+    .outer { display: table; position: absolute; height: 100%; width: 100%; }
+    .middle { display: table-cell; vertical-align: middle; }
+    .content {
+      max-width: 32em; padding: 0 1.25em; margin: 1.875em auto;
+      color: #c7c7c7; text-align: center; font-size: 1.72em; font-weight: 100;
+      height: 22em; background-repeat: no-repeat; background-size: 32%;
+      background-position: center center;
+      background-image: url('./blocked.png');
+    }
+    .content h1 { color: #00AAD7; font-size: 2.5em; margin: 0; margin-bottom: -20px; }
+    iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: none; display: none; }
+  </style>
+</head>
+<body>
+
+  <div id="browser-block" style="display:none;">
+    <div class="outer">
+      <div class="middle" aria-label="" title="cheddar noooooooooo">
+        <div class="content">
+          <h1><strong>RESTRICTED!</strong></h1>
+          <br />
+          This website has been blocked by Cheddar Hobbs.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <iframe id="app-frame"></iframe>
+
+<script>
+  const isInstallable = true;
+  const maintenanceMode = false;
+  const targetWidth = 900;
+  const targetHeight = 550;
+
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+  if (!isInstallable) {
+    const manifest = document.getElementById('pwa-manifest');
+    if (manifest) manifest.remove();
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      return false;
+    });
+  }
+
+  if (isPWA) {
+    window.resizeTo(targetWidth, targetHeight);
+
+    if (maintenanceMode) {
+      document.body.style.background = "#131313";
+
+      const blockScreen = document.getElementById('browser-block');
+      const contentDiv = blockScreen.querySelector('.content');
+      
+      contentDiv.style.backgroundImage = "none";
+      
+      let maintenanceHTML = "<h1><strong>error: ched</strong></h1>";
+      maintenanceHTML += "<br />cheddar is currently broken cause im an idiot";
+      maintenanceHTML += '<div style="font-size:100px; margin-top:30px;">🧀</div>'; 
+      
+      contentDiv.innerHTML = maintenanceHTML;
+      blockScreen.style.display = 'block';
+
+    } else {
+      const frame = document.getElementById('app-frame');
+      frame.style.display = 'block';
+
+      function injectFromBase(baseHref) {
+        return fetch(baseHref + 'index.html')
+          .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
+          .then(html => {
+            const destDoc = frame.contentWindow.document;
+            destDoc.open();
+            destDoc.write(`<base href="${baseHref}">` + html);
+            destDoc.close();
+          });
+      }
+
+      fetch('https://api.github.com/repos/failedrifle/hamburger/commits/main')
+        .then(r => { if (!r.ok) throw new Error(`GitHub API ${r.status}`); return r.json(); })
+        .then(data => {
+          const sha = data && data.sha;
+          if (!sha) throw new Error('SHA missing from API response');
+          return injectFromBase(`https://cdn.jsdelivr.net/gh/failedrifle/hamburger@${sha}/core/library/`);
+        })
+        .catch(err => {
+          return injectFromBase('https://cdn.jsdelivr.net/gh/failedrifle/hamburger@main/core/library/')
+            .catch(err2 => {
+              frame.src = 'https://failedrifle.github.io/hamburger/core/library/index.html';
+            });
+        });
+    }
+  } else {
+    document.title = 'RESTRICTED!';
+    document.getElementById('browser-block').style.display = 'block';
+  }
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => console.log('SW registered'))
+        .catch(err => console.error('SW failed'));
+    });
+  }
+</script>
+</body>
+</html>
