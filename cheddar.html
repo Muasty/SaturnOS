@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title id="page-title"></title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            background-color: #0C0C0C;
+            color: #CCCCCC;
+            font-family: 'Consolas', 'Lucida Console', monospace;
+            overflow: hidden;
+        }
+        #terminal-ui {
+            padding: 12px; display: flex; flex-direction: column;
+            height: 100vh; width: 100vw; box-sizing: border-box;
+            overflow-y: auto; position: relative;
+        }
+        .log-line { margin-bottom: 2px; white-space: pre-wrap; line-height: 1.2; font-size: 15px; }
+        .cmd-output-block { margin-bottom: 15px; }
+        .input-wrapper { position: relative; display: flex; flex-grow: 1; align-items: center; }
+        .input-area { display: flex; align-items: center; margin-top: 2px; }
+        .prompt { margin-right: 4px; color: #CCCCCC; white-space: nowrap; }
+        input {
+            background: transparent; border: none; color: #FFFFFF;
+            font-family: 'Consolas', monospace; font-size: 15px;
+            outline: none; width: 100%; padding: 0; z-index: 2;
+        }
+        #ghost-input {
+            position: absolute; top: 0; left: 0; color: #555555;
+            font-family: 'Consolas', monospace; font-size: 15px;
+            pointer-events: none; z-index: 1;
+        }
+        @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    </style>
+</head>
+<body onclick="document.getElementById('terminalInput').focus()">
+    <div id="terminal-ui">
+        <div class="log-line" id="version-line"></div>
+        <div class="log-line">Cheddar Corporation. All rights reserved.</div>
+        <br>
+        <div id="history">
+            <div class="log-line">THIS VERSION HAS BEEN DISABLED DUE TO SECURITY AND SITE PROTECTION.</div>
+        </div>
+        <div class="input-area">
+            <span class="prompt" id="prompt-text">C:\Users\redacted></span>
+            <div class="input-wrapper">
+                <input type="text" id="terminalInput" autofocus spellcheck="false" autocomplete="off">
+                <div id="ghost-input"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // ============================================================ \\
+                            // CHEDDAROS VERSION \\
+                         const OS_VERSION = "OUTDATED";
+        // ============================================================ \\
+
+        document.getElementById("page-title").innerText = "CheddarOS " + OS_VERSION;
+        document.getElementById("version-line").innerText = "CheddarOS " + OS_VERSION;
+
+        let currentState = "LOCKED";
+        const gateway = "adhufhedksegsahegasklhgeyskafhbgkjasfebsfyasjbfkjsgajfblaskegyfbkldhsyiabfksgaf";
+        const sr3dCDN = "https://cdn.jsdelivr.net/gh/failedrifle/snowrider3D/";
+        let isLaunching = false;
+        let cmdHistory = [];
+        let historyIdx = -1;
+
+        function atbash(str) {
+            const alpha = "abcdefghijklmnopqrstuvwxyz";
+            const rev = "zyxwvutsrqponmlkjihgfedcba";
+            return str.toLowerCase().split('').map(c => {
+                const i = alpha.indexOf(c);
+                return i > -1 ? rev[i] : c;
+            }).join('');
+        }
+
+        const fnaeHTML = `<!DOCTYPE html><html lang="en-us"><head><base href="https://cdn.jsdelivr.net/gh/FailedRifle/fnae@cbada0e/"><meta charset="utf-8"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>fnae</title><link rel="shortcut icon" href="TemplateData/favicon.ico"><link rel="stylesheet" href="TemplateData/style.css"></head><body><div id="unity-container"><canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas><div id="unity-loading-bar"><div id="unity-logo"></div><div id="unity-progress-bar-empty"><div id="unity-progress-bar-full"></div></div></div></div><script>let loadedBytes = 0;async function fetchWithProgress(url) {const response = await fetch(url);const reader = response.body.getReader();let chunks = [];let received = 0;while (true) {const { done, value } = await reader.read();if (done) break;received += value.length;loadedBytes += value.length;chunks.push(value);}let fullBuffer = new Uint8Array(received);let offset = 0;for (let chunk of chunks) {fullBuffer.set(chunk, offset);offset += chunk.length;}return fullBuffer.buffer;}async function mergeFiles(fileParts) {const buffers = await Promise.all(fileParts.map(part => fetchWithProgress(part)));const mergedBlob = new Blob(buffers);return URL.createObjectURL(mergedBlob);}function getParts(file, start, end) {let parts = [];for (let i = start; i <= end; i++) { parts.push(file + ".part" + i); }return parts;}(async () => {const [dataUrl, wasmUrl, webm] = await Promise.all([mergeFiles(getParts("Build/fnae.data", 1, 3)),mergeFiles(getParts("Build/fnae.wasm", 1, 3)),mergeFiles(getParts("StreamingAssets/202512191935.webm", 1, 3)),]);window.randomwebm = webm;const realSrc = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, "src");Object.defineProperty(HTMLMediaElement.prototype, "src", {set(value) {if (typeof value === "string" && (value.includes("202512191935.mp4") || value.includes("202512191935.webm"))) {value = window.randomwebm;}return realSrc.set.call(this, value);},get() { return realSrc.get.call(this); }});var canvas = document.querySelector("#unity-canvas");var loadingBar = document.querySelector("#unity-loading-bar");var progressBarFull = document.querySelector("#unity-progress-bar-full");var config = {arguments: [],dataUrl: dataUrl,frameworkUrl: "Build/fnae.framework.js",codeUrl: wasmUrl,streamingAssetsUrl: "StreamingAssets",companyName: "DefaultCompany",productName: "fnae",productVersion: "1.0",showBanner: function() {},};if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {var meta = document.createElement('meta');meta.name = 'viewport';meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';document.getElementsByTagName('head')[0].appendChild(meta);}loadingBar.style.display = "block";var script = document.createElement("script");script.src = "Build/fnae.loader.js";script.onload = () => {createUnityInstance(canvas, config, (progress) => {progressBarFull.style.width = 100 * progress + "%";}).then((unityInstance) => {loadingBar.style.display = "none";}).catch((message) => { console.error(message); });};document.body.appendChild(script);})();<\/script></body></html>`;
+        const mcHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>minecraft v1.12.2</title><script>window.__eaglercraftLoaderClient={container:"game_frame",name:"Eaglercraft 1.12",file:"net.peytonplayz585.eaglercraft.v1_12.client",cid:"bafybeidrnchyech7b26rqhm3tayt7p6mxvl23lzd4f5mcyqda7hbrzyal4",path:"",download:"https://cdn.jsdelivr.net/gh/genizy/mc@main/data/1.12.2.gz",dlSize:15601341,gzip:true};<\/script><script src="https://cdn.jsdelivr.net/gh/genizy/mc@main/shared/loader.js"><\/script><style>body,html{margin:0;width:100%;height:100%;overflow:hidden;background:#000;}</style></head><body><div id="game_frame" style="width:100%;height:100%;"></div></body></html>`;
+        const nzHTML = `<!doctype html><html lang="en-us"><head><base href="https://rawcdn.githack.com/gn-math/assets/main/308/"><meta charset="utf-8"><title>zombies</title><link rel="icon" href="data:,"><style>html,body{background-color:#000;margin:0;padding:0;width:100vw;height:100vh;overflow:hidden;}canvas.emscripten{width:100%;height:100%;display:block;image-rendering:crisp-edges;}#status{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#555;font-family:monospace;}</style></head><body><div id="status">Initializing...</div><canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas><script type='text/javascript'>var Module={arguments:['-width','1280','-height','720','+vid_pixelscale','2','+r_shadows','0','+r_dynamic','0','+gl_texturemode','gl_nearest','+cl_maxfps','60'],files:{"default.fmf":"default.fmf","nzp/game.pk3":"nzp/game.pk3","nzp/progs.pk3":"nzp/progs.pk3"},canvas:document.getElementById('canvas'),setStatus:function(text){var s=document.getElementById('status');if(s)s.innerHTML=text;if(!text)s.style.display='none';}};\(function(){var s=document.createElement('script');s.src="ftewebgl.js";s.async=true;document.head.appendChild(s);})()\;<\/script></body></html>`;
+        const gdHTML = `<!DOCTYPE html><html lang="en-US"><head><meta charset="utf-8"><title>geometry dash</title><style>body{margin:0;background-image:linear-gradient(rgb(0,0,0),rgb(0,102,255));overflow:hidden;display:flex;justify-content:center;align-items:center;height:100vh;}#gameContainer{width:100vw;height:100vh;}#loader{position:absolute;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:black;z-index:10;}.progress{width:50%;height:20px;background:#333;border:2px solid #fff;margin-top:20px;}.full{width:100%;height:100%;background:#00ff00;transform:scaleX(0);transform-origin:left;}</style></head><body><div id="loader"><div class="progress"><div class="full" id="progressBar"></div></div></div><div id="gameContainer"></div><script src="https://rawcdn.githack.com/genizy/google-class/main/gdlite/Build/UnityLoader.js"><\/script><script>var gameInstance=UnityLoader.instantiate("gameContainer","https://rawcdn.githack.com/genizy/google-class/main/gdlite/Build/GeometryDashLite.json",{onProgress:UnityProgress});function UnityProgress(gameInstance,progress){if(!gameInstance.Module)return;const loader=document.querySelector("#loader");const progressBar=document.querySelector("#progressBar");progressBar.style.transform="scaleX("+progress+")";if(progress===1){setTimeout(()=>{loader.style.display="none";},1500);}}<\/script></body></html>`;
+        const sm64HTML = `<!DOCTYPE html><html lang="en-us"><head><meta charset="utf-8"><title>Super Mario 64</title><style>body,html{margin:0;padding:0;width:100vw;min-height:100vh;font-family:Arial,sans-serif;color:white;background:#000;image-rendering:pixelated;overflow:hidden;}#container{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;}canvas{width:100vw;height:100vh;object-fit:contain;}</style></head><body><div id="container"><canvas class="emscripten" id="canvas"></canvas></div><script>var Module={preRun:[],postRun:[],print:function(t){console.log(t)},printErr:function(t){console.error(t)},canvas:function(){var e=document.getElementById("canvas");return e.width=window.innerWidth,e.height=window.innerHeight,e}(),setStatus:function(t){}};<\/script><script async src="https://cdn.jsdelivr.net/gh/ArkShocer/sm64@main/sm64.us.f3dex2e.js"><\/script></body></html>`;
+        const sr3dHTML = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><base href="${sr3dCDN}"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Snow Rider 3D</title><style>body,html{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#000;}.webgl-content{width:100%;height:100%;display:flex;}#gameContainer{width:100%;height:100%;}</style><link rel="stylesheet" href="${sr3dCDN}TemplateData/style.css"><script src="${sr3dCDN}TemplateData/UnityProgress.js"><\/script><script src="${sr3dCDN}Build/UnityLoader.js"><\/script></head><body><div class="webgl-content"><div id="gameContainer" style="width:100%;height:100%;margin:auto;"></div></div><script>var gameInstance=UnityLoader.instantiate("gameContainer","${sr3dCDN}Build/SnowRider3D-gd-1.json",{onProgress:UnityProgress,Module:{onRuntimeInitialized:function(){UnityProgress(gameInstance,"complete");}}});<\/script></body></html>`;
+        const tapHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Throw a Potato</title><style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:black;}iframe{width:100%;height:100%;border:0;}</style></head><body><iframe src="https://script.google.com/macros/s/AKfycbwN-fRMhnn-XH42I-ntRmSjua_dVyuuaFZ3dUEi5bAfXSjWHupafOKIh2xs69q_q2fmLQ/exec" allow="fullscreen; autoplay; encrypted-media" allowfullscreen sandbox="allow-same-origin allow-forms allow-scripts allow-pointer-lock allow-orientation-lock allow-popups"></iframe></body></html>`;
+        const rbHTML = `<!DOCTYPE html><html lang="en"><head><base href="https://cdn.jsdelivr.net/gh/genizy/assets@main/retro-bowl/"><meta charset="utf-8"><title>retro bowl</title><style>body,html{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background:#000;}canvas{width:100%;height:100%;image-rendering:pixelated;}</style></head><body><div class="gm4html5_div_class" id="gm4html5_div_id"><canvas id="canvas" width="960" height="540"></canvas></div><script src="html5game/RetroBowl.js"><\/script><script>function start(){if(typeof GameMaker_Init==="function"){GameMaker_Init();}else{setTimeout(start,50);}}start();<\/script></body></html>`;        
+        const ssHTML = ``;
+        const wbHTML = ``;
+        const brHTML = ``;
+        
+        const sites = {
+            "fnae": { name: "Five Nights at Epstein's", enabled: true,  content: fnaeHTML},
+            "geometrydash": { name: "Geometry Dash Lite", enabled: true,  content: gdHTML},
+            "minecraft": { name: "Minecraft v1.12.2", enabled: true,  content: mcHTML},
+            "zombies": { name: "CoD Zombies", enabled: true,  content: nzHTML},
+            "sm64": { name: "Super Mario 64", enabled: true,  content: sm64HTML},
+            "potato": { name: "Throw a Potato", enabled: true,  content: tapHTML },
+            "snowrider": { name: "Snow Rider 3D", enabled: true,  content: sr3dHTML},
+            "retrobowl": { name: "Retro Bowl", enabled: true,  content: rbHTML},
+            "shellshockers": { name: "Shell Shockers", enabled: false,  content: ssHTML},
+            "wresltebros": { name: "Wrestle Bros", enabled: false,  content: wbHTML},
+            "buckshot": { name: "Buckshot Roulette", enabled: false,  content: brHTML},
+
+        };
+
+        const commandDetails = {
+            "changelog": "View recent system updates.",
+            "clear":     "Clear the terminal screen.",
+            "credits":   "View the authors and contributors.",
+            "gamelist":  "List all available games.",
+            "help":      "Display this help menu."
+        };
+
+        const inputField  = document.getElementById("terminalInput");
+        const ghostField  = document.getElementById("ghost-input");
+        const historyArea = document.getElementById("history");
+        const ui          = document.getElementById("terminal-ui");
+        const allSuggestions = [...Object.keys(commandDetails), ...Object.keys(sites)].sort();
+
+        function changelog(...entries) {
+            return entries.map(e => {
+                const formatted = e.split('$').join('<br>');
+                return `<div class="log-line">${formatted}</div><div class="log-line"> </div>`;
+            }).join('');
+        }
+
+        function openInBlank(siteObj) {
+            const newWin = window.open('about:blank', '_blank');
+            if (!newWin || newWin.closed || typeof newWin.closed == 'undefined') return false;
+            newWin.document.write(siteObj.content);
+            newWin.document.close();
+            return true;
+        }
+
+        async function fakeLoad(siteKey) {
+            isLaunching = true;
+            inputField.disabled = true;
+            const siteData = sites[siteKey];
+
+            const outputBlock = document.createElement("div");
+            outputBlock.className = "cmd-output-block";
+            historyArea.appendChild(outputBlock);
+
+            if (!siteData.enabled) {
+                outputBlock.innerHTML += '<div class="log-line" style="color:#FF5555;">Sorry! ' + siteData.name + ' is currently unavailable.</div>';
+                outputBlock.innerHTML += '<div class="log-line" style="color:#FFAA00;">This game has been taken offline because of an error.</div>';
+                outputBlock.innerHTML += '<div class="log-line" style="color:#FFAA00;">Please check back next update to see the status of the game.</div>';
+                isLaunching = false;
+                inputField.disabled = false;
+                inputField.focus();
+                ui.scrollTop = ui.scrollHeight;
+                return;
+            }
+
+            const totalAssets = Math.floor(siteData.content.length / 2);
+            const duration = Math.min((totalAssets / 300) * 1500, 4000);
+
+            outputBlock.innerHTML += '<div class="log-line">Scanning bitstream for ' + siteData.name + '...</div>';
+
+            const loadLine = document.createElement("div");
+            loadLine.className = "log-line";
+            outputBlock.appendChild(loadLine);
+
+            const startTime = Date.now();
+            while (true) {
+                const elapsed  = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current  = Math.floor(progress * totalAssets);
+                loadLine.innerText = 'LOADING ASSETS: [' + current + '/' + totalAssets + ']';
+                ui.scrollTop = ui.scrollHeight;
+                if (progress >= 1) break;
+                await new Promise(r => setTimeout(r, Math.random() > 0.9 ? 60 : 15));
+            }
+
+            const success = openInBlank(siteData);
+
+            if (success) {
+                outputBlock.innerHTML += '<div class="log-line" style="color:#00FF00;">' + siteData.name + ' launched successfully.</div>';
+            } else {
+                outputBlock.innerHTML += '<div class="log-line" style="color:#FF5555;">ERROR: Popup was blocked by browser.</div>';
+                outputBlock.innerHTML += '<div class="log-line" style="color:#FF5555;">Please allow popups and type "' + siteKey + '" again.</div>';
+            }
+
+            isLaunching = false;
+            inputField.disabled = false;
+            inputField.focus();
+        }
+
+        inputField.addEventListener('input', function() {
+            if (currentState !== "COMMAND_MODE") { ghostField.innerText = ""; return; }
+            const val = inputField.value.toLowerCase();
+            if (!val) { ghostField.innerText = ""; return; }
+            const match = allSuggestions.find(s => s.startsWith(val));
+            ghostField.innerText = match ? val + match.slice(val.length) : "";
+        });
+
+        inputField.addEventListener('keydown', function(e) {
+            if (isLaunching) return;
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (cmdHistory.length > 0 && historyIdx < cmdHistory.length - 1) {
+                    historyIdx++;
+                    inputField.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIdx > 0) {
+                    historyIdx--;
+                    inputField.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
+                } else {
+                    historyIdx = -1;
+                    inputField.value = "";
+                }
+            } else if (e.key === 'Tab') {
+                e.preventDefault();
+                if (ghostField.innerText) { inputField.value = ghostField.innerText; ghostField.innerText = ""; }
+            } else if (e.key === 'Enter') {
+                ghostField.innerText = "";
+                handleInput();
+            }
+        });
+
+        function handleInput() {
+            const rawInput = inputField.value.trim();
+            if (rawInput === "") return;
+            cmdHistory.push(rawInput);
+            historyIdx = -1;
+            const userInput   = rawInput.toLowerCase();
+            const promptText  = document.getElementById("prompt-text");
+            const encodedAttempt = atbash(userInput);
+
+            historyArea.innerHTML += '<div class="log-line">' + promptText.innerText + ' ' + rawInput + '</div>';
+            const outputBlock = document.createElement("div");
+            outputBlock.className = "cmd-output-block";
+            historyArea.appendChild(outputBlock);
+
+            if (currentState === "LOCKED") {
+                if (encodedAttempt === gateway) {
+                    outputBlock.innerHTML += '<div class="log-line">ACCESS GRANTED. SYSTEM UNLOCKED.</div>';
+                    outputBlock.innerHTML += '<div class="log-line">Type "help" for a list of commands.</div>';
+                    outputBlock.innerHTML += '<div class="log-line">Type "changelog" to see any new updates.</div>';
+                    currentState = "COMMAND_MODE";
+                } else {
+                    outputBlock.innerHTML += '<div class="log-line">THIS VERSION OF CHEDDAR-OS I PERMINATLY OFFLINE. THIS FILE WILL NO LONGER WORK IN A WEEK AND BE DELETED</div>';
+                }
+            }
+            else if (currentState === "COMMAND_MODE") {
+                if (userInput === "help") {
+                    const maxCmdLen = Math.max(...Object.keys(commandDetails).map(k => k.length));
+                    for (let cmd in commandDetails) {
+                        const padded = cmd.padEnd(maxCmdLen + 4, '\u00A0');
+                        outputBlock.innerHTML += '<div class="log-line"> > ' + padded + commandDetails[cmd] + '</div>';
+                    }
+                }
+                else if (userInput === "clear") {
+                    historyArea.innerHTML = "";
+                    outputBlock.remove();
+                }
+                else if (userInput === "credits") {
+                    outputBlock.innerHTML += changelog(
+                        "--- CREDITS ---",
+                        "CheddarOS " + OS_VERSION,
+                        "Lead Programmer$- Cheddar Hobbs",
+                    );
+                }
+
+        // ============================================================ \\
+                            // CHEDDAROS UPDATE LOG \\
+
+                else if (userInput === "changelog") {
+                    outputBlock.innerHTML += changelog(
+                        "--- CHANGELOG ---",
+                        "2/27/2026$vBETA-1.0.10$- Added Buckshot Roulette$- Buckshot Roulette offline while working on GoGuardian bypass", // Added comma
+                        "2/27/2026$vBETA-1.0.9$- Added Wrestle Bros$- Wrestle Bros offline while working on GoGuardian bypass",
+                        "2/27/2026$vBETA-1.0.8$- Formatted the credits screen",
+                        "2/26/2026$vBETA-1.0.7$- Added Shell Shockers$- Shell Shockers offline while working on GoGuardian bypass",
+                        "2/26/2025$vBETA-1.0.6$- Added Retro Bowl",
+                        "2/26/2026$vBETA-1.0.5b$- Minor bug fixes$- Cut the loading speed in half for all current and future games.",
+                        "2/25/2026$vBETA-1.0.5$- Throw a Potato is finally fixed$- Removed ads inside Throw a Potato$- FNaE revamp$- Fixed Snow Rider 3D black screen after the loading was complete",
+                        "2/25/2026$vBETA-1.0.4$- FNaE back online",
+                        "2/25/2026$vBETA-1.0.3$- FNaE taken offline$- Throw a Potato back offline cause of GoGuardian",
+                        "2/23/2026$vBETA-1.0.2$- Minor big fixes$- Throw a Potato now playable (sorry about the ads)$- Added Snow Rider 3D but currently being worked on",
+                        "2/23/2026$vBETA-1.0.1$- Throw a Potato put under maintenance due to a fatal error",
+                        "2/23/2026$vBETA-1.0.0$- CheddarOS public beta testing release."
+                    );
+                }
+
+        // ============================================================ \\
+
+                else if (userInput === "gamelist") {
+                    const maxKeyLen = Math.max(...Object.keys(sites).map(k => k.length));
+                    for (let key in sites) {
+                        const status = sites[key].enabled ? '' : ' [OFFLINE]';
+                        const padded = key.padEnd(maxKeyLen + 4, '\u00A0');
+                        outputBlock.innerHTML += '<div class="log-line" style="color:' + (sites[key].enabled ? '#CCCCCC' : '#FF5555') + '"> > ' + padded + '(' + sites[key].name + ')' + status + '</div>';
+                    }
+                }
+                else if (sites[userInput]) {
+                    outputBlock.remove();
+                    fakeLoad(userInput);
+                }
+                else {
+                    outputBlock.innerHTML += '<div class="log-line">"' + rawInput + '" is not recognized as a valid command.</div>';
+                }
+            }
+
+            inputField.value = "";
+            ui.scrollTop = ui.scrollHeight;
+        }
+    </script>
+</body>
+</html>
